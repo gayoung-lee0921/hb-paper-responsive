@@ -1,0 +1,219 @@
+@import "vars";
+@import "mixins";
+
+body {
+  font-family: "Roboto", "Noto Sans KR", sans-serif;
+  font-size: 16px;
+  color: #111;
+  // min-height: 3000px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  border: none;
+  background: none;
+  outline: none;
+  color: inherit;
+}
+
+.container {
+  width: 84%;
+  max-width: 1520px;
+  margin: 0 auto;
+}
+
+#header {
+  height: 100px;
+  color: #fff;
+  // position:fixed를 쓰면 자식의 크기만큼만 갖기 때문에 쪼그라 들음, width를 줘야 안쪼그라 든다
+  width: 100%;
+  // header의 after에 absolute를 먹여서 header가 관여할 수 없게 됨, 관여하고 싶으니깐 position에 뭐라도 줘야 되는데
+  // header는 스크롤 내려도 고정됐으면 하니깐 fixed 줌(position:relative 줘도 됨)
+  position: fixed;
+  z-index: 99;
+  &.color {
+    color: #111;
+    #logo {
+      a {
+        .logo-color {
+          opacity: 1;
+        }
+        .logo-white {
+          opacity: 0;
+        }
+      }
+    }
+  }
+  &.on {
+    color: #111;
+    #gnb {
+      height: 400px;
+      background-color: #fff;
+    }
+    #logo {
+      a {
+        .logo-color {
+          opacity: 1;
+        }
+        .logo-white {
+          opacity: 0;
+        }
+      }
+    }
+  }
+  .container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    z-index: 2;
+  }
+  #logo {
+    position: absolute;
+    left: 0;
+    a {
+      width: 188px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      img {
+        position: absolute;
+        transition: all 0.25s ease;
+      }
+      .logo-color {
+        opacity: 0;
+      }
+    }
+  }
+  #gnb {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.25s ease;
+    .list {
+      display: flex;
+      z-index: 2;
+      position: relative;
+      > li {
+        &:hover {
+          .depth01 {
+            &:after {
+              width: calc(100% - 40px);
+              right: auto;
+              left: 20px;
+            }
+          }
+        }
+
+        .depth01 {
+          height: 100px;
+          @include flex;
+          // display: flex;
+          // justify-content: center;
+          // align-items: center;
+          padding: 0 50px;
+          font-size: $h4;
+          font-weight: 500;
+          position: relative;
+          &::after {
+            content: "";
+            display: block;
+            height: 3px;
+            background-color: #111;
+            position: absolute;
+            right: 20px;
+            width: 0;
+            bottom: 0;
+            transition: all 0.25s ease;
+          }
+        }
+        .depth02 {
+          padding: 30px 20px;
+          li {
+            a {
+              // display: flex;
+              // padding: 10px 0;
+              display: block;
+              padding: 10px 0;
+            }
+          }
+        }
+      }
+    }
+
+    // 하위 메뉴의 뒷 부분 영역
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 350px;
+      left: 0;
+      top: 100px;
+      background-color: #eee;
+    }
+
+    // header 바로 뒤에 있는 선 영역, header에다가 border-bottom주니깐 header 길어질 때 같이 늘어나서 불가능 함
+    &:after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: #ccc;
+      position: absolute;
+      top: 100px; // header 기준 아래로 height만큼 떨어져서 나타나야 되서
+      pointer-events: none; // gnb 영역에서 벗어나는 문제를 해결하기 위해
+    }
+  }
+  .util {
+    position: absolute;
+    right: 0;
+    top: 40px;
+    .language {
+      &:hover {
+        ul {
+          opacity: 1;
+        }
+      }
+      button {
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        cursor: pointer;
+
+        &:before {
+          content: "\e894";
+          font-family: "Material Icons";
+          display: block;
+          font-size: 20px;
+          margin-right: 10px;
+        }
+      }
+
+      ul {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-transform: uppercase;
+        font-weight: 500;
+        color: #111;
+        text-align: center;
+        opacity: 0;
+        transition: all 0.25s ease;
+        li {
+          a {
+            display: block;
+            padding: 5px 0;
+          }
+        }
+      }
+    }
+  }
+}
